@@ -2,15 +2,18 @@
 
 namespace frontend\controllers;
 
+use common\behaviors\ImageUploadsBehavior;
 use Yii;
 use common\models\Book;
 use common\models\BookSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * BookController implements the CRUD actions for Book model.
+ * @method actionImageUpload($model)
  */
 class BookController extends Controller
 {
@@ -20,12 +23,26 @@ class BookController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
                 ],
             ],
+            'imageUpload'=>[
+                'class'=>ImageUploadsBehavior::className(),
+                'controller_id'=>$this->id,
+                'imageFieldName'=>Book::IMAGE_FIELD
+            ]
         ];
     }
 
@@ -66,7 +83,9 @@ class BookController extends Controller
     {
         $model = new Book();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->preview = $this->actionImageUpload($model);
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -86,7 +105,9 @@ class BookController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->preview = $this->actionImageUpload($model);
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

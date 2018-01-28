@@ -1,5 +1,6 @@
 <?php
 
+use common\helpers\Image;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\jui\DatePicker;
@@ -29,9 +30,12 @@ $authorsArray = ArrayHelper::map($authors,'id',function($author_model){
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
 
-    <?= $form->field($model, 'date')->textInput() ?>
+    <?= $form->field($model, 'date')->textInput()->widget(DatePicker::className()) ?>
 
-    <?= $form->field($model, 'preview')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'preview')->fileInput() ?>
+    <?php  if($model->preview):?>
+        <?= Html::img(Image::thumb('/' . $model->preview, 200, 200), ['alt' => '']) ?>
+    <?php endif;?>
 
     <?= $form->field($model, 'author_id')->dropDownList($authorsArray,[
             'prompt'=>Yii::t('app','Choose author')

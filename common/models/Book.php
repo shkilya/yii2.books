@@ -20,6 +20,7 @@ use yii\db\ActiveRecord;
  */
 class Book extends ActiveRecord
 {
+    const IMAGE_FIELD = 'preview';
     /**
      * @inheritdoc
      */

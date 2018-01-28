@@ -31,11 +31,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             [
                 'attribute'=>'preview',
-                'format'=>'html',
+                'format'=>'raw',
                 'value'=>function($model){
 
                     /** @var \common\models\Book $model */
-                    return  Html::img(Image::thumb('/'.$model->preview,200,200),['width'=>200,'height'=>200]);
+
+                    return  '<a data-fancybox  href="'.Image::thumb('/'.$model->preview,400,400).'" >'.
+                            Html::img(Image::thumb('/'.$model->preview,200,200),['width'=>200,'height'=>200])
+                        .'</a>';
                 }
             ],
             [

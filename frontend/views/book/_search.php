@@ -56,7 +56,6 @@ $authorsArray = ArrayHelper::map($authors,'id',function($author_model){
         <div class="col-md-5">
             <div class="form-group">
                 <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-                <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
             </div>
         </div>
     </div>

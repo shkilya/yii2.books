@@ -95,7 +95,7 @@ class BookController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->preview = $this->actionImageUpload($model);
             $model->save();
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
@@ -117,7 +117,7 @@ class BookController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->preview = $this->actionImageUpload($model);
             $model->save();
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(Yii::$app->request->referrer);
         }
 
         return $this->render('update', [

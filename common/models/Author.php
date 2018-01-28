@@ -11,6 +11,7 @@ use yii\db\ActiveRecord;
  * @property int $id
  * @property string $firstname
  * @property string $lastname
+ * @property string $fullName
  */
 class Author extends ActiveRecord
 {
@@ -42,5 +43,10 @@ class Author extends ActiveRecord
             'firstname' => 'Firstname',
             'lastname' => 'Lastname',
         ];
+    }
+
+    public function getFullName()
+    {
+        return  $this->firstname.' '.$this->lastname;
     }
 }

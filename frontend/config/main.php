@@ -45,7 +45,10 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-
+                [
+                    'pattern' => 'book/view-popup/<id:[\d-]+>',
+                    'route' => 'book/view-popup',
+                ],
             ],
         ],
 

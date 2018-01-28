@@ -75,8 +75,37 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+
+                'format'=>'raw',
+                'value'=>function($model){
+                    return '<a style="cursor: pointer;"><span class="glyphicon glyphicon-eye-open view-book" data-book_id="'.$model->id.'" ></span></a>' ;
+                }
+            ],
+            ['class' => 'yii\grid\ActionColumn','template'=>'{update}'],
+            ['class' => 'yii\grid\ActionColumn','template'=>'{delete}'],
+
         ],
     ]); ?>
     <?php Pjax::end(); ?>
 </div>
+
+<?php
+yii\bootstrap\Modal::begin([
+                               'headerOptions' => ['id' => 'modalHeader'],
+                               'id' => 'BookModal',
+                               'size' => 'modal-lg',
+                               'closeButton' => [
+                                   'id'=>'close-button',
+                                   'class'=>'close',
+                                   'data-dismiss' =>'modal',
+                               ],
+                               //keeps from closing modal with esc key or by clicking out of the modal.
+                               // user must click cancel or X to close
+                               'clientOptions' => [
+                                   'backdrop' => false, 'keyboard' => true
+                               ]
+                           ]);
+echo "<div id='BookModalContent'></div>";
+yii\bootstrap\Modal::end();
+?>

@@ -10,6 +10,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * BookController implements the CRUD actions for Book model.
@@ -70,6 +71,14 @@ class BookController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    public function actionViewPopup($id)
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return $this->renderAjax('view-popup', [
             'model' => $this->findModel($id),
         ]);
     }

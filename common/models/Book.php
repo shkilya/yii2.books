@@ -34,7 +34,13 @@ class Book extends ActiveRecord
     public function rules()
     {
         return [
-            [['date_create', 'date_update', 'date', 'author_id'], 'integer'],
+            ['date','required'],
+            ['date','string'],
+            ['date','trim'],
+
+
+            [['date_create', 'date_update', 'author_id'], 'integer'],
+            ['author_id','required'],
             [['name', 'preview'], 'string', 'max' => 255],
         ];
     }

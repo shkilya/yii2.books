@@ -82,4 +82,16 @@ class Book extends ActiveRecord
     {
         return  $this->hasOne(Author::className(),['id'=>'author_id']);
     }
+
+
+    /**
+     * @inheritdoc
+     * @param bool $insert
+     * @return bool
+     */
+    public function beforeSave($insert)
+    {
+        $this->date =  strtotime($this->date);
+        return parent::beforeSave($insert);
+    }
 }

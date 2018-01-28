@@ -1,11 +1,23 @@
 <?php
 
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use common\models\Author;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\BookSearch */
 /* @var $form yii\widgets\ActiveForm */
+
+
+$authors = Author::find()->all();
+/** @var array $authorsArray */
+$authorsArray = ArrayHelper::map($authors,'id',function($author_model){
+    /** @var Author  $author_model */
+    return  $author_model->firstname.' '.$author_model->lastname;
+} );
+
+
 ?>
 
 <div class="book-search">
@@ -18,24 +30,43 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <div class="row">
+        <div class="col-md-6">
+            <?php  echo $form->field($model, 'author_id')->dropDownList($authorsArray,[
+                'prompt'=>''
+            ]) ?>
+        </div>
+        <div class="col-md-6">
+            <?= $form->field($model, 'name') ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group row">
+            <?= $form->field($model, 'date_publish_start')
+                ->widget(\yii\jui\DatePicker::className())
+                ->label('Дата выхода книги') ?>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'date_publish_end')
+                ->widget(\yii\jui\DatePicker::className())
+                ->label('до') ?>
+        </div>
+        <div class="col-md-5">
+            <div class="form-group">
+                <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+                <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+            </div>
+        </div>
+    </div>
 
-    <?= $form->field($model, 'name') ?>
-
-    <?= $form->field($model, 'date_create') ?>
-
-    <?= $form->field($model, 'date_update') ?>
-
-    <?= $form->field($model, 'date') ?>
 
     <?php // echo $form->field($model, 'preview') ?>
 
-    <?php // echo $form->field($model, 'author_id') ?>
 
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
-    </div>
+
+
 
     <?php ActiveForm::end(); ?>
 

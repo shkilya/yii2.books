@@ -12,12 +12,18 @@ use common\models\Book;
  */
 class BookSearch extends Book
 {
+    /** @var  string */
+    public $date_publish_start;
+
+    /** @var  string */
+    public $date_publish_end;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
+            [['date_publish_start','date_publish_end'],'string'],
             [['id', 'date_create', 'date_update', 'date', 'author_id'], 'integer'],
             [['name', 'preview'], 'safe'],
         ];
@@ -65,6 +71,19 @@ class BookSearch extends Book
             'date' => $this->date,
             'author_id' => $this->author_id,
         ]);
+
+        if($this->date_publish_start && $this->date_publish_end) {
+            $query->andFilterWhere(['BETWEEN','date',strtotime($this->date_publish_start),strtotime($this->date_publish_end)]);
+        }
+
+        if($this->date_publish_start && !$this->date_publish_end) {
+            $query->andFilterWhere(['>','date',strtotime($this->date_publish_start)]);
+        }
+
+        if(!$this->date_publish_start && $this->date_publish_end) {
+            $query->andFilterWhere(['<','date',strtotime($this->date_publish_end)]);
+        }
+
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'preview', $this->preview]);

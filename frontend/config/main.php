@@ -17,6 +17,9 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser'
+            ]
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -43,14 +46,43 @@ return [
         'urlManager' => [
             'class' => 'yii\web\UrlManager',
             'enablePrettyUrl' => true,
+//            'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
+                ['class' => 'yii\rest\UrlRule','controller'=>'book-api/api'],
                 [
                     'pattern' => 'book/view-popup/<id:[\d-]+>',
                     'route' => 'book/view-popup',
                 ],
+                [
+                    'pattern' => 'book/',
+                    'route' => 'book/index',
+                ],
+                [
+                    'pattern' => 'book/create',
+                    'route' => 'book/create',
+                ],
+                [
+                    'pattern' => 'book/update/<id:[\d-]+>',
+                    'route' => 'book/update',
+                ],
+                [
+                    'pattern' => 'book/delete/<id:[\d-]+>',
+                    'route' => 'book/delete',
+                ],
+                'PUT,PATCH book-api/api/<id>' => 'book-api/api/update',
+                'DELETE book-api/api/<id>' => 'book-api/api/delete',
+                'GET,HEAD book-api/api/<id>' => 'book-api/api/view',
+                'POST book-api/api' => 'book-api/api/create',
+                'GET,HEAD book-api/api' => 'book-api/api/index',
             ],
         ],
+
+    ],
+    'modules'=>[
+        'book-api'=>[
+            'class'=>'frontend\modules\BookApiModule'
+        ]
 
     ],
     'params' => $params,
